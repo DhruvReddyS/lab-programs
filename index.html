@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab Programs: MAD and DS</title>
+<meta name="description" content="Copy-paste ready code with step-by-step save, compile and run instructions for MAD Lab (Set 0, Set 2) and DS Lab (Programs 2, 3, 5).">
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --surface-2: #f1f3f6;
+    --text: #1f2328;
+    --muted: #59636e;
+    --border: #d8dee4;
+    --accent: #1d4ed8;
+    --accent-soft: #e8efff;
+    --mad: #1d4ed8;
+    --ds: #047857;
+    --code-bg: #f6f8fa;
+    --code-text: #1f2328;
+    --term-bg: #1e1e1e;
+    --term-bar: #3a3a3a;
+    --term-text: #e6e6e6;
+    --term-cmd: #7ee787;
+    --term-typed: #ffd866;
+    --ok-bg: #ecfdf5;
+    --ok-border: #a7f3d0;
+    --warn-bg: #fffbeb;
+    --warn-border: #fde68a;
+    --shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1115;
+      --surface: #171a20;
+      --surface-2: #1f232b;
+      --text: #e6e8eb;
+      --muted: #9aa4af;
+      --border: #2d333b;
+      --accent: #6b9bff;
+      --accent-soft: #1b2540;
+      --mad: #6b9bff;
+      --ds: #34d399;
+      --code-bg: #12151a;
+      --code-text: #e6e8eb;
+      --ok-bg: #0f2a20;
+      --ok-border: #1f5c45;
+      --warn-bg: #2a2410;
+      --warn-border: #5c4d1f;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1115; --surface: #171a20; --surface-2: #1f232b; --text: #e6e8eb; --muted: #9aa4af;
+    --border: #2d333b; --accent: #6b9bff; --accent-soft: #1b2540; --mad: #6b9bff; --ds: #34d399;
+    --code-bg: #12151a; --code-text: #e6e8eb; --ok-bg: #0f2a20; --ok-border: #1f5c45;
+    --warn-bg: #2a2410; --warn-border: #5c4d1f; --shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px; line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  code, pre, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+
+  /* top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; }
+  .brand { font-weight: 700; text-decoration: none; color: var(--text); white-space: nowrap; }
+  .tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs a {
+    text-decoration: none; color: var(--muted); font-size: 14px; padding: 5px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  .tabs a:hover { background: var(--surface-2); color: var(--text); }
+  .tabs a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+  /* hero */
+  .hero { max-width: 1180px; margin: 0 auto; padding: 36px 16px 12px; }
+  .hero h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.5px; }
+  .hero p { color: var(--muted); margin: 0 0 20px; max-width: 720px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+    box-shadow: var(--shadow); border-top: 4px solid var(--mad);
+  }
+  .card.ds { border-top-color: var(--ds); }
+  .card h2 { margin: 0 0 4px; font-size: 19px; }
+  .card p { margin: 0 0 10px; font-size: 14.5px; }
+  .card ul { margin: 0 0 12px; padding-left: 18px; font-size: 14.5px; }
+  .card .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    display: inline-block; text-decoration: none; font-size: 14px; font-weight: 600; padding: 7px 12px; border-radius: 8px;
+    border: 1px solid var(--border); color: var(--text); background: var(--surface-2);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .card.ds .btn.primary { background: var(--ds); border-color: var(--ds); }
+
+  /* layout */
+  .layout { max-width: 1180px; margin: 0 auto; padding: 8px 16px 64px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; }
+  .toc { position: sticky; top: 64px; align-self: start; max-height: calc(100vh - 80px); overflow-y: auto; font-size: 14px; padding-top: 20px; }
+  .toc .group { font-weight: 700; margin: 14px 0 4px; color: var(--text); }
+  .toc a { display: block; text-decoration: none; color: var(--muted); padding: 3px 0 3px 10px; border-left: 2px solid var(--border); }
+  .toc a:hover { color: var(--text); }
+  .toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+  main { min-width: 0; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .toc { display: none; }
+  }
+
+  /* sections */
+  .lab-title {
+    margin: 36px 0 10px; padding: 12px 16px; border-radius: 10px; color: #fff; background: var(--mad);
+    font-size: 22px; font-weight: 700;
+  }
+  .lab-title.ds { background: var(--ds); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .lab-title { color: #0f1115; } }
+  section.block {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  @media (max-width: 600px) { section.block { padding: 16px 14px; } }
+  section.block > h2 { margin: 0 0 6px; font-size: 22px; letter-spacing: -0.2px; }
+  h3 { font-size: 18px; margin: 22px 0 8px; }
+  h4 { font-size: 16px; margin: 16px 0 6px; }
+  .q {
+    background: var(--surface-2); border-left: 4px solid var(--mad); border-radius: 6px; padding: 10px 14px; margin: 10px 0;
+  }
+  .q.ds { border-left-color: var(--ds); }
+  .step { margin: 24px 0 8px; font-size: 17px; font-weight: 700; line-height: 1.5; }
+  .step .n {
+    display: inline-block; white-space: nowrap; margin-right: 8px; vertical-align: 2px;
+    background: var(--text); color: var(--bg); font-size: 12px; font-weight: 700; border-radius: 6px; padding: 1px 8px; letter-spacing: .3px;
+  }
+  .where {
+    background: var(--surface-2); border-left: 3px solid var(--accent); border-radius: 4px; padding: 8px 12px; margin: 8px 0; font-size: 15px;
+  }
+  .note { background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+  .result { background: var(--ok-bg); border: 1px solid var(--ok-border); border-radius: 8px; padding: 10px 14px; margin: 14px 0 0; }
+  kbd {
+    font-size: 13px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface);
+  }
+  code.i { font-size: 14px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+  ul, ol { padding-left: 22px; }
+  li { margin: 3px 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 8px 0; }
+  th, td { border: 1px solid var(--border); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--surface-2); }
+  td code { font-size: 13px; overflow-wrap: anywhere; }
+  .table-wrap { overflow-x: auto; }
+
+  /* code blocks with copy */
+  .code { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 10px 0 14px; background: var(--code-bg); }
+  .code-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 8px 6px 14px;
+    background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 13.5px;
+  }
+  .code-head .fname { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 600; overflow-wrap: anywhere; }
+  .code pre { margin: 0; padding: 12px 14px; overflow-x: auto; font-size: 13.5px; line-height: 1.5; color: var(--code-text); }
+  .copy {
+    font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 7px; padding: 4px 12px;
+    border: 1px solid var(--accent); background: var(--accent); color: #fff; white-space: nowrap;
+  }
+  .copy:hover { filter: brightness(1.08); }
+  .copy.done { background: var(--ds); border-color: var(--ds); }
+  .cmd {
+    display: flex; align-items: center; gap: 10px; background: var(--term-bg); color: var(--term-cmd); border-radius: 8px;
+    padding: 6px 6px 6px 14px; margin: 8px 0; font-size: 14px;
+  }
+  .cmd code { flex: 1; overflow-x: auto; white-space: pre; }
+  .cmd .label { color: #9aa4af; font-family: inherit; font-size: 12.5px; white-space: nowrap; }
+
+  /* terminal output */
+  .terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin: 10px 0; }
+  .terms.tpc { grid-template-columns: 1.2fr 1fr; }
+  .terms.tpc .coord { grid-row: span 2; }
+  @media (max-width: 700px) { .terms.tpc { grid-template-columns: minmax(0, 1fr); } .terms.tpc .coord { grid-row: auto; } }
+  .term { background: var(--term-bg); border-radius: 10px; overflow: hidden; border: 1px solid #111; min-width: 0; }
+  .term .bar { background: var(--term-bar); padding: 6px 10px; display: flex; align-items: center; gap: 6px; color: #d0d0d0; font-size: 12.5px; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .r { background: #ff5f57; } .y { background: #febc2e; } .g { background: #28c840; }
+  .term .bar .t { margin-left: 6px; }
+  .term pre { margin: 0; padding: 10px 12px 12px; color: var(--term-text); font-size: 13px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .term .c { color: var(--term-cmd); }
+  .term .u { color: var(--term-typed); font-weight: 700; }
+  .legend { font-size: 14px; color: var(--muted); }
+  .legend b { color: #b7791f; }
+
+  .shots { display: flex; flex-wrap: wrap; gap: 18px; margin: 10px 0; }
+  .shots figure { margin: 0; text-align: center; }
+  .shots img { width: 190px; max-width: 100%; border: 1px solid var(--border); border-radius: 10px; display: block; }
+  .shots figcaption { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 24px 16px 40px; }
+  .theme-toggle { margin-left: auto; font: inherit; font-size: 13px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">Lab Programs</a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#set0">MAD Set 0</a>
+      <a href="#set2">MAD Set 2</a>
+      <a href="#ds-start">DS Start</a>
+      <a href="#p2">DS 2: Chat</a>
+      <a href="#p3">DS 3: RMI</a>
+      <a href="#p5">DS 5: 2PC</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">Theme</button>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <h1>Lab Programs: MAD and DS</h1>
+  <p>Copy-paste ready code with clear, step-by-step instructions to save, compile, run and check the output. Every program here was run and tested.
+     Click <b>Copy</b> on any code block to copy the whole file.</p>
+  <div class="cards">
+    <div class="card">
+      <h2>MAD Lab</h2>
+      <p>Mobile Application Development · Java · Android Studio</p>
+      <ul>
+        <li><b>Set 0:</b> GUI components, font and colors</li>
+        <li><b>Set 2:</b> Basic graphical primitives</li>
+      </ul>
+      <div class="btns">
+        <a class="btn primary" href="#set0">Open MAD Lab</a>
+        <a class="btn" href="pdf/Android_Lab_Set0_Set2.pdf" download>Download PDF</a>
+      </div>
+    </div>
+    <div class="card ds">
+      <h2>DS Lab</h2>
+      <p>Distributed Systems · Java · Terminal</p>
+      <ul>
+        <li><b>Program 2:</b> TCP client–server chat</li>
+        <li><b>Program 3:</b> Java RMI date and time service</li>
+        <li><b>Program 5:</b> Two-Phase Commit (2PC)</li>
+      </ul>
+      <div class="btns">
+        <a class="btn primary" href="#ds-start">Open DS Lab</a>
+        <a class="btn" href="pdf/DS_Lab_Programs_2_3_5.pdf" download>Download PDF</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="On this page">
+    <div class="group">MAD Lab</div>
+    <a href="#set0">Set 0: Theory</a>
+    <a href="#set0-exp">Set 0: Experiment</a>
+    <a href="#set2">Set 2: Theory</a>
+    <a href="#set2-exp">Set 2: Experiment</a>
+    <a href="#mad-run">How to run (Android)</a>
+    <div class="group">DS Lab</div>
+    <a href="#ds-start">Before you start</a>
+    <a href="#p2">Program 2: TCP Chat</a>
+    <a href="#p3">Program 3: RMI</a>
+    <a href="#p5">Program 5: 2PC</a>
+    <a href="#ds-fix">If something goes wrong</a>
+  </nav>
+
+<main>
+
+<!-- ======================================================================= -->
+<!--                                MAD LAB                                  -->
+<!-- ======================================================================= -->
+<div class="lab-title">MAD Lab · Mobile Application Development (Android, Java)</div>
+
+<!-- ---------------- SET 0 THEORY ---------------- -->
+<section class="block" id="set0">
+  <h2>Set 0</h2>
+  <div class="q"><b>1. Theory:</b> Explain TextView, EditText and Button in Android. How can font size, font style and text color be set?</div>
+
+  <h4>TextView</h4>
+  <ul>
+    <li>A <b>TextView</b> (<code class="i">android.widget.TextView</code>) is a GUI component that <b>displays text</b> to the user.</li>
+    <li>The user can only read the text, not edit it. It is used for labels, headings and messages.</li>
+    <li>Common attributes: <code class="i">android:text</code>, <code class="i">android:textSize</code>, <code class="i">android:textColor</code>,
+        <code class="i">android:textStyle</code>, <code class="i">android:gravity</code>.</li>
+    <li>In Java: <code class="i">setText("Hello")</code> changes the text.</li>
+  </ul>
+
+  <h4>EditText</h4>
+  <ul>
+    <li>An <b>EditText</b> is a subclass of TextView that lets the user <b>type and edit text</b>, for example a name, password or number.</li>
+    <li>Common attributes: <code class="i">android:hint</code> (grey placeholder text) and <code class="i">android:inputType</code>
+        (<code class="i">text</code>, <code class="i">number</code>, <code class="i">textPassword</code>, <code class="i">phone</code>, <code class="i">textEmailAddress</code>).</li>
+    <li>In Java: <code class="i">String s = editText.getText().toString();</code> reads what the user typed.</li>
+  </ul>
+
+  <h4>Button</h4>
+  <ul>
+    <li>A <b>Button</b> is a subclass of TextView that the user <b>taps to perform an action</b>.</li>
+    <li>The tap is handled with <code class="i">setOnClickListener()</code> in Java, or with <code class="i">android:onClick</code> in XML.</li>
+  </ul>
+
+  <h4>Example (XML)</h4>
+  <div class="code"><div class="code-head"><span class="fname">Example</span><button class="copy" type="button">Copy</button></div>
+<pre><code>&lt;TextView
+    android:text="Hello"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:textColor="#FF0000" /&gt;
+
+&lt;EditText
+    android:hint="Enter your name"
+    android:inputType="text" /&gt;
+
+&lt;Button
+    android:text="Submit" /&gt;</code></pre></div>
+
+  <h4>Setting font size, font style and text color</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Property</th><th>In XML</th><th>In Java</th></tr>
+    <tr><td><b>Font size</b></td><td><code>android:textSize="20sp"</code></td><td><code>textView.setTextSize(20);</code></td></tr>
+    <tr><td><b>Font style</b></td><td><code>android:textStyle="bold"</code> (normal, bold, italic, bold|italic)<br><code>android:typeface="serif"</code> (sans, serif, monospace)</td>
+        <td><code>textView.setTypeface(Typeface.SERIF, Typeface.BOLD);</code></td></tr>
+    <tr><td><b>Text color</b></td><td><code>android:textColor="#FF0000"</code></td><td><code>textView.setTextColor(Color.RED);</code></td></tr>
+    <tr><td><b>Background color</b></td><td><code>android:background="#FFFF00"</code></td><td><code>view.setBackgroundColor(Color.YELLOW);</code></td></tr>
+  </table></div>
+  <p><b>sp</b> (scale-independent pixels) is used for text size, so the text scales with the user's font settings. Colors are written as <b>#RRGGBB</b> hex values or with constants like <code class="i">Color.RED</code>.</p>
+</section>
+
+<!-- ---------------- SET 0 EXPERIMENT ---------------- -->
+<section class="block" id="set0-exp">
+  <h2>Set 0</h2>
+  <div class="q"><b>2. Execution Experiment:</b> To develop a Simple Android/iOS Application that uses GUI components, Font and Colors.</div>
+
+  <div class="step"><span class="n">STEP 1</span> Create the project</div>
+  <ol>
+    <li>Open Android Studio and click <b>New Project</b>.</li>
+    <li>Select <b>Empty Views Activity</b>, then click <b>Next</b>.</li>
+    <li><b>Name:</b> <code class="i">Set 0</code> · <b>Package name:</b> <code class="i">com.example.set0</code> (fills in automatically) · <b>Language:</b> <code class="i">Java</code> · <b>Minimum SDK:</b> leave the default</li>
+    <li>Click <b>Finish</b> and wait until the loading bar at the bottom stops. The first time can take a few minutes.</li>
+  </ol>
+
+  <div class="step"><span class="n">STEP 2</span> Paste the layout (XML)</div>
+  <div class="where"><b>Where:</b> left panel → <b>app → res → layout → activity_main.xml</b>. If you see a phone picture instead of code, click <b>Code</b> at the top right.<br>
+    <b>Do:</b> click <b>Copy</b> below, then in Android Studio press <kbd>Ctrl</kbd>+<kbd>A</kbd> (select all) and <kbd>Ctrl</kbd>+<kbd>V</kbd> (paste). On Mac use <kbd>Cmd</kbd>.</div>
+  <div class="code"><div class="code-head"><span class="fname">activity_main.xml</span><button class="copy" type="button">Copy</button></div>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"&gt;
+
+    &lt;TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World"
+        android:textSize="20sp" /&gt;
+
+    &lt;Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click Me" /&gt;
+
+&lt;/LinearLayout&gt;</code></pre></div>
+
+  <div class="step"><span class="n">STEP 3</span> Paste the Java code</div>
+  <div class="where"><b>Where:</b> left panel → <b>app → java</b> (may say <b>kotlin+java</b>) → <b>com.example.set0 → MainActivity</b><br>
+    <b>Do:</b> <kbd>Ctrl</kbd>+<kbd>A</kbd>, then <kbd>Ctrl</kbd>+<kbd>V</kbd>.</div>
+  <div class="code"><div class="code-head"><span class="fname">MainActivity.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>package com.example.set0;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
+
+        TextView t = findViewById(R.id.text);
+        Button btn = findViewById(R.id.button);
+
+        btn.setOnClickListener(v -&gt; {
+            t.setTextSize(40);                            // font size
+            t.setTypeface(Typeface.SERIF, Typeface.BOLD); // font style
+            t.setTextColor(Color.RED);                    // color
+        });
+    }
+}</code></pre></div>
+  <p class="legend">If you named the project something else, keep the first line <code class="i">package ...;</code> that Android Studio created.</p>
+
+  <div class="step"><span class="n">STEP 4</span> Run and output</div>
+  <p>Click the green <b>▶ Run</b> button (see <a href="#mad-run">How to run</a>).</p>
+  <div class="shots">
+    <figure><img src="images/set0_before.png" alt="Set 0 app before tapping: Hello World and a Click Me button"><figcaption>Before tapping</figcaption></figure>
+    <figure><img src="images/set0_after.png" alt="Set 0 app after tapping: Hello World in large bold red serif text"><figcaption>After tapping CLICK ME</figcaption></figure>
+  </div>
+  <p><b>Output:</b> The screen shows "Hello World" and a <b>CLICK ME</b> button. When the button is tapped, the text becomes <b>size 40</b>, <b>bold serif</b> and <b>red</b>.</p>
+  <p><b>How it works:</b> The XML places a TextView and a Button. <code class="i">findViewById</code> links them to Java, and <code class="i">setOnClickListener</code> changes the font size, font style and color when the button is tapped.</p>
+  <div class="result"><b>Result:</b> A simple Android application using GUI components, font and colors was developed and executed successfully.</div>
+</section>
+
+<!-- ---------------- SET 2 THEORY ---------------- -->
+<section class="block" id="set2">
+  <h2>Set 2</h2>
+  <div class="q"><b>1. Theory:</b> What are graphical primitives? Explain how Canvas and Paint are used to draw shapes in Android.</div>
+
+  <h4>Graphical primitives</h4>
+  <p><b>Graphical primitives</b> are the basic shapes that all graphics are built from. Complex drawings are combinations of them.</p>
+  <ul>
+    <li><b>Point</b>: a single dot at (x, y)</li>
+    <li><b>Line</b>: joins two points</li>
+    <li><b>Rectangle</b>: four sides, given by left, top, right, bottom</li>
+    <li><b>Circle</b>: given by a center (cx, cy) and a radius</li>
+    <li><b>Oval / Ellipse</b> and <b>Arc</b>: drawn inside a rectangle</li>
+    <li><b>Text</b>: a string drawn at a position</li>
+  </ul>
+
+  <h4>Canvas</h4>
+  <ul>
+    <li><b>Canvas</b> (<code class="i">android.graphics.Canvas</code>) is the <b>drawing surface</b>. It provides methods that draw each primitive.</li>
+    <li>Coordinates are in pixels. <b>(0, 0) is the top-left corner</b>; x increases to the right and y increases downward.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <tr><th>Canvas method</th><th>Draws</th></tr>
+    <tr><td><code>drawPoint(x, y, paint)</code></td><td>a point</td></tr>
+    <tr><td><code>drawLine(x1, y1, x2, y2, paint)</code></td><td>a line between two points</td></tr>
+    <tr><td><code>drawRect(left, top, right, bottom, paint)</code></td><td>a rectangle</td></tr>
+    <tr><td><code>drawCircle(cx, cy, radius, paint)</code></td><td>a circle</td></tr>
+    <tr><td><code>drawOval(left, top, right, bottom, paint)</code></td><td>an oval inside that rectangle</td></tr>
+    <tr><td><code>drawText(text, x, y, paint)</code></td><td>text</td></tr>
+    <tr><td><code>drawColor(color)</code></td><td>fills the whole background</td></tr>
+  </table></div>
+
+  <h4>Paint</h4>
+  <ul><li><b>Paint</b> (<code class="i">android.graphics.Paint</code>) describes <b>how</b> to draw: color, thickness, fill and text size.</li></ul>
+  <div class="table-wrap"><table>
+    <tr><th>Paint method</th><th>Purpose</th></tr>
+    <tr><td><code>setColor(Color.RED)</code></td><td>drawing color</td></tr>
+    <tr><td><code>setStrokeWidth(10)</code></td><td>thickness of lines and outlines</td></tr>
+    <tr><td><code>setStyle(Paint.Style.FILL / STROKE)</code></td><td>filled shape or outline only</td></tr>
+    <tr><td><code>setTextSize(60)</code></td><td>size of text drawn with drawText</td></tr>
+    <tr><td><code>setAntiAlias(true)</code></td><td>smooth edges</td></tr>
+  </table></div>
+
+  <h4>Steps to draw shapes</h4>
+  <ol>
+    <li>Create a class that <b>extends View</b>.</li>
+    <li>Override <code class="i">onDraw(Canvas canvas)</code>. Android calls it automatically whenever the view is shown.</li>
+    <li>Create a <b>Paint</b> object and set its color, stroke width and text size.</li>
+    <li>Call the Canvas draw methods, for example <code class="i">canvas.drawCircle(700, 450, 150, paint)</code>.</li>
+    <li>Show the view with <code class="i">setContentView(new MyView(this))</code>. Calling <code class="i">invalidate()</code> redraws it.</li>
+  </ol>
+</section>
+
+<!-- ---------------- SET 2 EXPERIMENT ---------------- -->
+<section class="block" id="set2-exp">
+  <h2>Set 2</h2>
+  <div class="q"><b>2. Execution Experiment:</b> To develop a Simple Android/iOS Application that draws basic Graphical Primitives on the screen.</div>
+
+  <div class="step"><span class="n">STEP 1</span> Create the project</div>
+  <ol>
+    <li><b>File → New → New Project</b> (or <b>New Project</b> on the welcome screen).</li>
+    <li>Select <b>Empty Views Activity</b>, then click <b>Next</b>.</li>
+    <li><b>Name:</b> <code class="i">Set 2</code> · <b>Package name:</b> <code class="i">com.example.set2</code> · <b>Language:</b> <code class="i">Java</code></li>
+    <li>Click <b>Finish</b> and wait for loading to stop.</li>
+  </ol>
+
+  <div class="step"><span class="n">STEP 2</span> Paste the Java code (no XML change needed)</div>
+  <div class="where"><b>Where:</b> left panel → <b>app → java</b> (may say <b>kotlin+java</b>) → <b>com.example.set2 → MainActivity</b><br>
+    <b>Do:</b> <kbd>Ctrl</kbd>+<kbd>A</kbd>, then <kbd>Ctrl</kbd>+<kbd>V</kbd>. On Mac use <kbd>Cmd</kbd>.</div>
+  <div class="code"><div class="code-head"><span class="fname">MainActivity.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>package com.example.set2;
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(new View(this) {
+            protected void onDraw(Canvas c) {
+                Paint p = new Paint();
+                p.setStrokeWidth(10);
+                p.setTextSize(60);
+
+                p.setColor(Color.RED);
+                c.drawLine(100, 200, 900, 200, p);         // line
+
+                p.setColor(Color.BLUE);
+                c.drawRect(100, 300, 450, 600, p);         // rectangle
+
+                p.setColor(Color.GREEN);
+                c.drawCircle(700, 450, 150, p);            // circle
+
+                p.setColor(Color.BLACK);
+                c.drawText("Hello Graphics", 100, 800, p); // text
+            }
+        });
+    }
+}</code></pre></div>
+
+  <div class="step"><span class="n">STEP 3</span> Run and output</div>
+  <div class="shots">
+    <figure><img src="images/set2_output.png" alt="Set 2 app showing a red line, blue rectangle, green circle and the text Hello Graphics"><figcaption>Output</figcaption></figure>
+    <div style="flex:1; min-width: 240px;">
+      <p>Click the green <b>▶ Run</b> button (see <a href="#mad-run">How to run</a>).</p>
+      <p><b>Output:</b> a red <b>line</b>, a blue <b>rectangle</b>, a green <b>circle</b> and the <b>text</b> "Hello Graphics".</p>
+      <p><b>How it works:</b> Instead of an XML layout, the app shows a custom View. Android calls its <code class="i">onDraw()</code> with a Canvas. Paint sets the color, thickness and text size, and <code class="i">drawLine</code>, <code class="i">drawRect</code>, <code class="i">drawCircle</code> and <code class="i">drawText</code> draw the primitives at the given (x, y) pixel positions.</p>
+    </div>
+  </div>
+  <div class="result"><b>Result:</b> A simple Android application that draws basic graphical primitives was developed and executed successfully.</div>
+</section>
+
+<!-- ---------------- MAD HOW TO RUN ---------------- -->
+<section class="block" id="mad-run">
+  <h2>How to run (Android Studio, same for Set 0 and Set 2)</h2>
+  <ol>
+    <li>Look at the top toolbar for the <b>device dropdown</b>, next to the green <b>▶ Run</b> button.</li>
+    <li><b>If a phone name is shown</b> (for example <i>Medium Phone</i>), go to step 4.</li>
+    <li><b>If it says "No Devices":</b>
+      <ol type="a">
+        <li>Open <b>Device Manager</b>: click the phone icon on the right side, or use <b>View → Tool Windows → Device Manager</b>.</li>
+        <li>Click <b>+</b>, then <b>Create Virtual Device</b>, choose <b>Medium Phone</b> (or any phone), and click <b>Next → Finish</b>.</li>
+        <li>Click <b>▶</b> next to the new phone to start it.</li>
+      </ol></li>
+    <li>Click the green <b>▶ Run</b> button, or press <kbd>Shift</kbd>+<kbd>F10</kbd> on Windows or <kbd>Ctrl</kbd>+<kbd>R</kbd> on Mac.</li>
+    <li>Wait for the emulator to start. Your app opens on it automatically.</li>
+  </ol>
+  <h4>If something goes wrong</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Problem</th><th>Fix</th></tr>
+    <tr><td><code>R</code> or the code is red</td><td><b>Build → Rebuild Project</b> and wait.</td></tr>
+    <tr><td>Error on the first line <code>package ...</code></td><td>You gave the project a different name. Change the first line to the <code>package</code> line Android Studio made, for example <code>package com.example.myapplication;</code></td></tr>
+    <tr><td>Can't find the <b>java</b> folder</td><td>Set the dropdown at the top of the left panel to <b>Android</b>.</td></tr>
+    <tr><td>Layout file shows a phone picture, not code</td><td>Click <b>Code</b> at the top right of the editor.</td></tr>
+    <tr><td>Emulator is very slow</td><td>Wait. The first boot can take 1–2 minutes.</td></tr>
+  </table></div>
+</section>
+
+<!-- ======================================================================= -->
+<!--                                 DS LAB                                  -->
+<!-- ======================================================================= -->
+<div class="lab-title ds">DS Lab · Distributed Systems (Java)</div>
+
+<section class="block" id="ds-start">
+  <h2>Before you start (read once)</h2>
+  <ol>
+    <li><b>Check Java is installed.</b> Open a terminal (Command Prompt on Windows) and run the command below. If it prints a version number you are ready. If it says <i>"not recognized"</i>, install the JDK first.
+      <div class="cmd"><code>javac -version</code><button class="copy" type="button">Copy</button></div></li>
+    <li><b>One folder per program.</b> For example, make <code class="i">TCPChat</code>, <code class="i">RMI</code> and <code class="i">2PC</code> folders on the Desktop.</li>
+    <li><b>Save each file with the exact name shown</b> (capital letters matter). The file name must match the class name: <code class="i">public class ChatServer</code> must be saved as <code class="i">ChatServer.java</code>.</li>
+    <li><b>Open the terminal inside that folder.</b>
+      <ul>
+        <li><b>Windows:</b> open the folder in File Explorer, click the address bar, type <code class="i">cmd</code> and press <kbd>Enter</kbd>.</li>
+        <li><b>Mac:</b> open Terminal, type <code class="i">cd </code> (with a space), drag the folder into the window and press <kbd>Enter</kbd>.</li>
+      </ul></li>
+    <li><b>Always start the server first</b>, then the client. Each one runs in its <b>own terminal window</b>, and all of them are opened in the same folder.</li>
+  </ol>
+
+  <div class="warn">
+    <b>How to save a .java file correctly</b>
+    <ul>
+      <li><b>Notepad (Windows):</b> paste the code, then <b>File → Save As</b>. Choose the folder, set <b>Save as type: All Files</b>, and type the name, for example <code class="i">ChatServer.java</code>. Without "All Files" it becomes <code class="i">ChatServer.java.txt</code> and won't compile.</li>
+      <li><b>VS Code (Windows / Mac):</b> <b>File → New File</b>, paste, then <b>File → Save As</b> with the exact name.</li>
+      <li><b>TextEdit (Mac):</b> first click <b>Format → Make Plain Text</b>, then save with the exact name and choose <b>Use .java</b>.</li>
+    </ul>
+  </div>
+
+  <h4>Quick overview</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Program</th><th>Folder</th><th>Files to save</th><th>Terminals</th><th>Port</th></tr>
+    <tr><td><b>2.</b> TCP Client–Server Chat</td><td><code>TCPChat</code></td><td><code>ChatServer.java</code>, <code>ChatClient.java</code></td><td>2</td><td>5050</td></tr>
+    <tr><td><b>3.</b> Java RMI Date and Time</td><td><code>RMI</code></td><td><code>DateService.java</code>, <code>Server.java</code>, <code>Client.java</code></td><td>2</td><td>1099</td></tr>
+    <tr><td><b>5.</b> Two-Phase Commit (2PC)</td><td><code>2PC</code></td><td><code>Coordinator.java</code>, <code>Participant.java</code></td><td>3</td><td>6789</td></tr>
+  </table></div>
+</section>
+
+<!-- ---------------- PROGRAM 2 ---------------- -->
+<section class="block" id="p2">
+  <h2>Program 2: TCP Client–Server Chat Application</h2>
+  <div class="q ds"><b>Aim:</b> To develop a client–server chat application in Java using TCP sockets.</div>
+
+  <h4>Theory</h4>
+  <ul>
+    <li><b>TCP</b> (Transmission Control Protocol) is <b>connection-oriented</b>: a connection is made first, then data is sent <b>reliably and in order</b>.</li>
+    <li>The server creates a <code class="i">ServerSocket</code> on a port (5050) and calls <code class="i">accept()</code>, which waits for a client. The client connects with <code class="i">new Socket("localhost", 5050)</code>.</li>
+    <li>Messages are sent with <code class="i">PrintWriter</code> and received with <code class="i">BufferedReader</code>.</li>
+    <li>The chat is <b>turn by turn</b>: the client sends a message, then the server replies, and so on. Typing <code class="i">bye</code> ends the chat.</li>
+  </ul>
+
+  <div class="step"><span class="n">STEP 1</span> Save the two files in a folder named <code class="i">TCPChat</code></div>
+  <div class="code"><div class="code-head"><span class="fname">ChatServer.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.io.*;
+import java.net.*;
+
+public class ChatServer {
+    public static void main(String[] args) throws Exception {
+        ServerSocket server = new ServerSocket(5050);
+        System.out.println("Server started. Waiting for client...");
+        Socket s = server.accept();
+        System.out.println("Client connected. Type 'bye' to exit.");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+        BufferedReader kb = new BufferedReader(new InputStreamReader(System.in));
+
+        while (true) {
+            String msg = in.readLine();                  // receive from client
+            if (msg == null || msg.equalsIgnoreCase("bye")) break;
+            System.out.println("Client: " + msg);
+
+            System.out.print("Server: ");
+            String reply = kb.readLine();                // type a reply
+            out.println(reply);                          // send to client
+            if (reply.equalsIgnoreCase("bye")) break;
+        }
+        System.out.println("Chat ended.");
+        s.close();
+        server.close();
+    }
+}</code></pre></div>
+
+  <div class="code"><div class="code-head"><span class="fname">ChatClient.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.io.*;
+import java.net.*;
+
+public class ChatClient {
+    public static void main(String[] args) throws Exception {
+        Socket s = new Socket("localhost", 5050);
+        System.out.println("Connected to server. Type 'bye' to exit.");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+        BufferedReader kb = new BufferedReader(new InputStreamReader(System.in));
+
+        while (true) {
+            System.out.print("Client: ");
+            String msg = kb.readLine();                  // type a message
+            out.println(msg);                            // send to server
+            if (msg.equalsIgnoreCase("bye")) break;
+
+            String reply = in.readLine();                // receive from server
+            if (reply == null || reply.equalsIgnoreCase("bye")) break;
+            System.out.println("Server: " + reply);
+        }
+        System.out.println("Chat ended.");
+        s.close();
+    }
+}</code></pre></div>
+
+  <div class="step"><span class="n">STEP 2</span> Compile (once)</div>
+  <p>Open a terminal in the <code class="i">TCPChat</code> folder and run the command below. If nothing is printed, it compiled successfully.</p>
+  <div class="cmd"><code>javac ChatServer.java ChatClient.java</code><button class="copy" type="button">Copy</button></div>
+
+  <div class="step"><span class="n">STEP 3</span> Run</div>
+  <ol>
+    <li><b>Terminal 1</b>: the server. Start this first.
+      <div class="cmd"><code>java ChatServer</code><button class="copy" type="button">Copy</button></div></li>
+    <li><b>Terminal 2</b>: open another terminal in the same folder.
+      <div class="cmd"><code>java ChatClient</code><button class="copy" type="button">Copy</button></div></li>
+    <li>Type a message in the <b>client</b> window and press <kbd>Enter</kbd>. Then type a reply in the <b>server</b> window and press <kbd>Enter</kbd>. Keep taking turns.</li>
+    <li>Type <code class="i">bye</code> in either window to end the chat.</li>
+  </ol>
+
+  <div class="step"><span class="n">OUTPUT</span></div>
+  <p class="legend"><b>Yellow text</b> = what was typed on the keyboard.</p>
+  <div class="terms">
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 1: Server</span></div>
+<pre><span class="c">&gt; java ChatServer</span>
+Server started. Waiting for client...
+Client connected. Type 'bye' to exit.
+Client: Hello Server
+Server: <span class="u">Hi Client, how are you?</span>
+Client: I am fine. What about you?
+Server: <span class="u">I am good too. Nice to chat!</span>
+Chat ended.</pre></div>
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 2: Client</span></div>
+<pre><span class="c">&gt; java ChatClient</span>
+Connected to server. Type 'bye' to exit.
+Client: <span class="u">Hello Server</span>
+Server: Hi Client, how are you?
+Client: <span class="u">I am fine. What about you?</span>
+Server: I am good too. Nice to chat!
+Client: <span class="u">bye</span>
+Chat ended.</pre></div>
+  </div>
+  <div class="result"><b>Result:</b> A TCP client–server chat application was developed and executed successfully.</div>
+</section>
+
+<!-- ---------------- PROGRAM 3 ---------------- -->
+<section class="block" id="p3">
+  <h2>Program 3: Java RMI (Remote Method Invocation): Date and Time Service</h2>
+  <div class="q ds"><b>Aim:</b> To develop a Java RMI application in which the client gets the current date and time from a remote server.</div>
+
+  <h4>Theory</h4>
+  <ul>
+    <li><b>RMI</b> lets a Java program <b>call a method of an object that runs in another JVM</b>, even on another computer, as if it were a local method.</li>
+    <li><b>Remote interface</b> (<code class="i">DateService</code>): extends <code class="i">Remote</code> and lists the methods the client can call. Each method throws <code class="i">RemoteException</code>.</li>
+    <li><b>Implementation</b> (<code class="i">Server</code>): extends <code class="i">UnicastRemoteObject</code> and contains the real code of the method.</li>
+    <li><b>RMI Registry</b>: a name service on port <b>1099</b>. The server registers its object under a name with <code class="i">Naming.rebind</code>, and the client finds it with <code class="i">Naming.lookup</code>.</li>
+    <li><b>Stub</b>: a client-side proxy created automatically. It sends the method call over the network and brings back the result.</li>
+  </ul>
+
+  <div class="step"><span class="n">STEP 1</span> Save the three files in a folder named <code class="i">RMI</code></div>
+  <div class="code"><div class="code-head"><span class="fname">DateService.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.rmi.*;
+
+public interface DateService extends Remote {
+    String getDateTime() throws RemoteException;
+}</code></pre></div>
+
+  <div class="code"><div class="code-head"><span class="fname">Server.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.rmi.*;
+import java.rmi.registry.*;
+import java.rmi.server.*;
+import java.util.Date;
+
+public class Server extends UnicastRemoteObject implements DateService {
+    Server() throws RemoteException {
+        super();
+    }
+
+    public String getDateTime() {
+        return new Date().toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        LocateRegistry.createRegistry(1099);
+        Naming.rebind("rmi://localhost/DateService", new Server());
+        System.out.println("RMI Server is ready...");
+    }
+}</code></pre></div>
+
+  <div class="code"><div class="code-head"><span class="fname">Client.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.rmi.*;
+
+public class Client {
+    public static void main(String[] args) throws Exception {
+        DateService d = (DateService) Naming.lookup("rmi://localhost/DateService");
+        System.out.println("Date and Time from server: " + d.getDateTime());
+    }
+}</code></pre></div>
+
+  <div class="step"><span class="n">STEP 2</span> Compile (once)</div>
+  <p>Open a terminal in the <code class="i">RMI</code> folder:</p>
+  <div class="cmd"><code>javac DateService.java Server.java Client.java</code><button class="copy" type="button">Copy</button></div>
+
+  <div class="step"><span class="n">STEP 3</span> Run</div>
+  <ol>
+    <li><b>Terminal 1</b>: the server. Start it first, leave it open, and wait for <i>"RMI Server is ready..."</i>.
+      <div class="cmd"><code>java Server</code><button class="copy" type="button">Copy</button></div></li>
+    <li><b>Terminal 2</b>: same folder.
+      <div class="cmd"><code>java Client</code><button class="copy" type="button">Copy</button></div></li>
+    <li>The client prints the server's date and time. Run <code class="i">java Client</code> again to get the updated time.</li>
+    <li>To stop the server, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in Terminal 1.</li>
+  </ol>
+  <p class="legend">You don't need to run <code class="i">rmiregistry</code> separately, because the server starts it with <code class="i">LocateRegistry.createRegistry(1099)</code>.</p>
+
+  <div class="step"><span class="n">OUTPUT</span></div>
+  <div class="terms">
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 1: Server</span></div>
+<pre><span class="c">&gt; java Server</span>
+RMI Server is ready...</pre></div>
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 2: Client</span></div>
+<pre><span class="c">&gt; java Client</span>
+Date and Time from server: Fri Oct 30 21:45:59 IST 2026</pre></div>
+  </div>
+  <p><b>How it works:</b> The server registers itself in the RMI registry as <code class="i">DateService</code>. The client looks up that name and calls <code class="i">getDateTime()</code>. The method runs on the server, and the date and time come back to the client.</p>
+  <div class="result"><b>Result:</b> A Java RMI Date and Time service was developed and executed successfully.</div>
+</section>
+
+<!-- ---------------- PROGRAM 5 ---------------- -->
+<section class="block" id="p5">
+  <h2>Program 5: Two-Phase Commit (2PC) Protocol Using Coordinator and Participants</h2>
+  <div class="q ds"><b>Aim:</b> To implement the Two-Phase Commit protocol in Java with one coordinator and two participants using TCP sockets.</div>
+
+  <h4>Theory</h4>
+  <ul>
+    <li><b>2PC</b> is an <b>atomic commitment protocol</b> for distributed transactions: <b>either all participants commit, or all abort</b>.</li>
+    <li><b>Coordinator</b>: controls the transaction and makes the final decision. <b>Participants</b>: vote on whether they are ready.</li>
+    <li><b>Phase 1, Prepare (voting):</b> the coordinator sends <code class="i">PREPARE</code> to every participant, and each one replies <b>YES</b> (ready) or <b>NO</b>.</li>
+    <li><b>Phase 2, Commit / Abort:</b> if <b>all</b> votes are YES, the coordinator sends <code class="i">COMMIT</code> to everyone. If <b>any</b> vote is NO, it sends <code class="i">ABORT</code> to everyone.</li>
+    <li><b>Drawback:</b> it is a <i>blocking</i> protocol. If the coordinator crashes after PREPARE, the participants have to wait.</li>
+  </ul>
+
+  <div class="step"><span class="n">STEP 1</span> Save the two files in a folder named <code class="i">2PC</code></div>
+  <div class="code"><div class="code-head"><span class="fname">Coordinator.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.io.*;
+import java.net.*;
+
+public class Coordinator {
+    public static void main(String[] args) throws Exception {
+        int n = 2;   // number of participants
+        ServerSocket server = new ServerSocket(6789);
+        System.out.println("Coordinator waiting for " + n + " participants...");
+
+        Socket[] s = new Socket[n];
+        BufferedReader[] in = new BufferedReader[n];
+        PrintWriter[] out = new PrintWriter[n];
+
+        for (int i = 0; i &lt; n; i++) {
+            s[i] = server.accept();
+            in[i] = new BufferedReader(new InputStreamReader(s[i].getInputStream()));
+            out[i] = new PrintWriter(s[i].getOutputStream(), true);
+            System.out.println("Participant " + (i + 1) + " connected");
+        }
+
+        // Phase 1: Prepare (voting)
+        System.out.println("\nPhase 1: Sending PREPARE to all participants");
+        for (int i = 0; i &lt; n; i++) {
+            out[i].println("PREPARE");
+        }
+
+        boolean allYes = true;
+        for (int i = 0; i &lt; n; i++) {
+            String vote = in[i].readLine();
+            System.out.println("Participant " + (i + 1) + " voted: " + vote);
+            if (!"YES".equals(vote)) {
+                allYes = false;
+            }
+        }
+
+        // Phase 2: Commit or Abort
+        String decision = allYes ? "COMMIT" : "ABORT";
+        System.out.println("\nPhase 2: Decision = " + decision);
+        for (int i = 0; i &lt; n; i++) {
+            out[i].println(decision);
+            s[i].close();
+        }
+        server.close();
+    }
+}</code></pre></div>
+
+  <div class="code"><div class="code-head"><span class="fname">Participant.java</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class Participant {
+    public static void main(String[] args) throws Exception {
+        Socket s = new Socket("localhost", 6789);
+        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Connected to coordinator");
+        System.out.println("Coordinator says: " + in.readLine());   // PREPARE
+
+        System.out.print("Ready to commit? (YES/NO): ");
+        out.println(sc.nextLine().trim().toUpperCase());              // send vote
+
+        System.out.println("Final decision: " + in.readLine());      // COMMIT or ABORT
+        s.close();
+    }
+}</code></pre></div>
+
+  <div class="step"><span class="n">STEP 2</span> Compile (once)</div>
+  <p>Open a terminal in the <code class="i">2PC</code> folder:</p>
+  <div class="cmd"><code>javac Coordinator.java Participant.java</code><button class="copy" type="button">Copy</button></div>
+
+  <div class="step"><span class="n">STEP 3</span> Run (3 terminals, all in the 2PC folder)</div>
+  <ol>
+    <li><b>Terminal 1</b>: the coordinator. Start it first.
+      <div class="cmd"><code>java Coordinator</code><button class="copy" type="button">Copy</button></div></li>
+    <li><b>Terminal 2</b>: it waits until the second participant joins. That is normal.
+      <div class="cmd"><code>java Participant</code><button class="copy" type="button">Copy</button></div></li>
+    <li><b>Terminal 3</b>:
+      <div class="cmd"><code>java Participant</code><button class="copy" type="button">Copy</button></div></li>
+    <li>Both participants now ask <i>"Ready to commit? (YES/NO)"</i>. Type <b>YES</b> or <b>NO</b> in each one and press <kbd>Enter</kbd>.</li>
+    <li><b>YES</b> in both gives <b>COMMIT</b>. <b>NO</b> in either gives <b>ABORT</b>. Run all three again to try the other case.</li>
+  </ol>
+  <p class="legend">To use 3 participants, change <code class="i">int n = 2;</code> to <code class="i">int n = 3;</code>, compile again, and open one more terminal running <code class="i">java Participant</code>.</p>
+
+  <div class="step"><span class="n">OUTPUT</span></div>
+  <p class="legend"><b>Yellow text</b> = what was typed on the keyboard.</p>
+  <h4>Case 1: both participants vote YES, so the decision is COMMIT</h4>
+  <div class="terms tpc">
+    <div class="term coord"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 1: Coordinator</span></div>
+<pre><span class="c">&gt; java Coordinator</span>
+Coordinator waiting for 2 participants...
+Participant 1 connected
+Participant 2 connected
+
+Phase 1: Sending PREPARE to all participants
+Participant 1 voted: YES
+Participant 2 voted: YES
+
+Phase 2: Decision = COMMIT</pre></div>
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 2: Participant 1</span></div>
+<pre><span class="c">&gt; java Participant</span>
+Connected to coordinator
+Coordinator says: PREPARE
+Ready to commit? (YES/NO): <span class="u">YES</span>
+Final decision: COMMIT</pre></div>
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 3: Participant 2</span></div>
+<pre><span class="c">&gt; java Participant</span>
+Connected to coordinator
+Coordinator says: PREPARE
+Ready to commit? (YES/NO): <span class="u">YES</span>
+Final decision: COMMIT</pre></div>
+  </div>
+
+  <h4>Case 2: one participant votes NO, so the decision is ABORT</h4>
+  <div class="terms tpc">
+    <div class="term coord"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 1: Coordinator</span></div>
+<pre><span class="c">&gt; java Coordinator</span>
+Coordinator waiting for 2 participants...
+Participant 1 connected
+Participant 2 connected
+
+Phase 1: Sending PREPARE to all participants
+Participant 1 voted: YES
+Participant 2 voted: NO
+
+Phase 2: Decision = ABORT</pre></div>
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 2: Participant 1</span></div>
+<pre><span class="c">&gt; java Participant</span>
+Connected to coordinator
+Coordinator says: PREPARE
+Ready to commit? (YES/NO): <span class="u">YES</span>
+Final decision: ABORT</pre></div>
+    <div class="term"><div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Terminal 3: Participant 2</span></div>
+<pre><span class="c">&gt; java Participant</span>
+Connected to coordinator
+Coordinator says: PREPARE
+Ready to commit? (YES/NO): <span class="u">NO</span>
+Final decision: ABORT</pre></div>
+  </div>
+  <div class="result"><b>Result:</b> The Two-Phase Commit protocol with a coordinator and participants was implemented and executed successfully.</div>
+</section>
+
+<!-- ---------------- DS TROUBLESHOOTING ---------------- -->
+<section class="block" id="ds-fix">
+  <h2>If something goes wrong (DS Lab)</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Error / problem</th><th>Fix</th></tr>
+    <tr><td><code>'javac' is not recognized</code></td><td>The JDK is not installed or not on PATH. Install the JDK and open a new terminal.</td></tr>
+    <tr><td><code>error: file not found: ChatServer.java</code></td><td>The terminal is not in the right folder, or the file was saved as <code>.java.txt</code>. Save again with <b>All Files</b>.</td></tr>
+    <tr><td><code>class X is public, should be declared in a file named X.java</code></td><td>The file name doesn't match the class name. Rename it exactly, including capital letters.</td></tr>
+    <tr><td><code>Connection refused</code></td><td>Start the server or coordinator first, then the client or participants.</td></tr>
+    <tr><td><code>Address already in use</code> / <code>Port already in use: 1099</code></td><td>An old server is still running. Close that terminal or press <kbd>Ctrl</kbd>+<kbd>C</kbd> in it, then try again.</td></tr>
+    <tr><td>Participant waits and nothing happens</td><td>Normal. The coordinator waits until <b>both</b> participants have joined.</td></tr>
+  </table></div>
+</section>
+
+</main>
+</div>
+
+<footer>Lab Programs · MAD Lab (Set 0, Set 2) and DS Lab (Programs 2, 3, 5)</footer>
+
+<script>
+  // Copy buttons: copy the code next to the button
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+  function legacyCopy(text) {
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy') ? resolve() : reject(); } catch (e) { reject(e); }
+      document.body.removeChild(ta);
+    });
+  }
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var box = btn.closest('.code, .cmd');
+      var code = box.querySelector('code');
+      copyText(code.textContent).then(function () {
+        btn.textContent = 'Copied!'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1500);
+      }, function () {
+        btn.textContent = 'Select & copy';
+        var range = document.createRange(); range.selectNodeContents(code);
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      });
+    });
+  });
+
+  // Highlight the current section in the side and top navigation
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a, .tabs a'));
+  var targets = {};
+  links.forEach(function (a) { var id = a.getAttribute('href').slice(1); (targets[id] = targets[id] || []).push(a); });
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (a) { a.classList.remove('active'); });
+      var id = e.target.id;
+      var tabId = { 'set0-exp': 'set0', 'set2-exp': 'set2', 'mad-run': 'set2', 'ds-fix': 'p5' }[id] || id;
+      (targets[id] || []).forEach(function (a) { a.classList.add('active'); });
+      (targets[tabId] || []).forEach(function (a) { a.classList.add('active'); });
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  Object.keys(targets).forEach(function (id) { var el = document.getElementById(id); if (el) observer.observe(el); });
+
+  // Theme toggle (remembers choice when storage is available)
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem('theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+</script>
+</body>
+</html>
